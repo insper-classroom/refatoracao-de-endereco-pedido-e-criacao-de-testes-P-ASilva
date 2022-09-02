@@ -4,15 +4,24 @@
 # Created By  : Tiago Sanches da Silva e Fabio Miranda - https://github.com/Tiagoeem | https://github.com/mirwox
 # Created Date: 15/08/2022
 # version ='1.0'
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#----------------------------------------------------------------------------
+# Created By  : Tiago Sanches da Silva e Fabio Miranda - https://github.com/Tiagoeem | https://github.com/mirwox
+# Created Date: 15/08/2022
+# version ='1.0'
 # ---------------------------------------------------------------------------
 from classes.PessoaFisica import PessoaFisica
 from classes.Endereco import Endereco
-
+from classes.Produto import Produto
+from classes.Carrinho import Carrinho
+from classes.Pedido import Pedido
+from classes.Pagamentos import Pagamento
 import copy
 
 # Caso de uso em que se busca uma pessoa e um produto
 # Cria uma pessoa 
-pessoa1 = PessoaFisica('Carlos', 'tiago@email.com', '524.222.452-6')
+pessoa1 = PessoaFisica(nome='Carlos', email='tiago@email.com', cpf = '524.222.452-6')
 print(pessoa1)
 
 # Cria  um endereço
@@ -41,8 +50,10 @@ sabonete = Produto("0010342967", "Sabonete")
 ###########################################
 
 pessoas = PessoaFisica.busca_nome('Carlos')
+
 if len(pessoas) > 0:
     pessoa = pessoas[0]  #Pega a primeira pessoa
+
 
 
 produtos = Produto.busca_nome("sabon")
@@ -54,16 +65,16 @@ if len(produtos) > 0:
 carrinho = Carrinho()
 carrinho.adicionar_item(sabonete)
 
-pedido = Pedido()
+pedido = Pedido(carrinho,pessoa)
 
 ends = pessoa.listar_enderecos()
 
-if len(ends > 0):
+if len(ends) > 0:
     endereco = ends[0]
 
 # Lembre-se de adicionar estes atributos ao endereço
 pedido.endereco_entrega = copy.deepcopy(endereco) 
-pedido.endereco_faturamento = copy.deepcopy(endreco)
+pedido.endereco_faturamento = copy.deepcopy(endereco)
 
 
 pag = Pagamento(pedido)
@@ -75,6 +86,3 @@ print("Pedido aguardando coleta")
 
 ## Pedido deve imprir todos os detalhes da compra - pessoa, endereço e produtos
 print(pedido)
-
-
-

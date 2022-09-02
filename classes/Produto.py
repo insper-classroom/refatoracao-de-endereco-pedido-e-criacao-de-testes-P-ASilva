@@ -10,5 +10,31 @@
 
 class Produto:
 
-    def __init__(self, id='', nome=''):
-        pass
+    __dict = {}
+
+    def __init__(self, id_prod, nome_prod, price = 0.00):
+        self.id = id_prod
+        self.nome = nome_prod
+        Produto.__dict[nome_prod] = self
+
+    def change_id(self,new_id):
+        self.id = new_id
+
+    def get_id(self):
+        return self.id
+
+    def change_name(self, new_name):
+        self.nome = new_name
+
+    def get_name(self):
+        return self.nome
+
+    def busca_nome(nome):
+        results = []
+        for person in Produto.__dict:
+            if person == nome:
+                results += [Produto.__dict[nome]]
+        return results
+
+    def __str__(self):
+        return f'{self.nome} [ID:{self.id}]'

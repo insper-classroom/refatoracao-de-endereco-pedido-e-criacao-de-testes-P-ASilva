@@ -8,6 +8,7 @@
 
 import requests
 import json
+import numpy as np
 
 
 class Endereco: 
@@ -16,30 +17,32 @@ class Endereco:
     Esta classe possui overload de Contrutor, caso envie apenas três parametros será encaminhado
     para o contrutor que consulta o cep para encontrar o endereço.
     '''
-
-    def __init__(self, cep, numero ,rua='', estado='', cidade='', complemento=''):
+    
+    def __init__(cls, cep, numero ,rua='', estado='', cidade='', complemento=''):
 
         if (rua == '') or (estado == '') or (cidade == ''):
-            end_json = self.consultar_cep(cep)
+            cep = Endereco.check_and_fix_cep_sintax(cep)
 
-            self.rua = end_json['logradouro']
-            self.estado = end_json['uf']
-            self.cidade = end_json['localidade']
-            self.numero = numero
-            self.complemento = complemento
-            self.cep = str(cep)
+            end_json =  cls.consultar_cep(cep)
+
+            cls.rua = end_json['logradouro']
+            cls.estado = end_json['uf']
+            cls.cidade = end_json['localidade']
+            cls.numero = numero
+            cls.complemento = complemento
+            cls.cep = str(cep)
 
         else:
 
-            self.rua = rua
-            self.estado = estado
-            self.cidade = cidade
-            self.numero = int(numero)
-            self.complemento = complemento
-            self.cep = str(cep)
+            cls.rua = rua
+            cls.estado = estado
+            cls.cidade = cidade
+            cls.numero = int(numero)
+            cls.complemento = complemento
+            cls.cep = str(cep)
 
-
-    def consultar_cep(self, cep):
+    @classmethod
+    def consultar_cep(cls, cep):
         '''
         Metodo realiza a consulta do cep em uma api publica para obter informações
         como estado, cidade e rua
@@ -47,6 +50,12 @@ class Endereco:
         # continuam existindo variaveis locais, nem tudo é propriedade de objeto
 
         # end point da API de consulta ao cep
+
+        cep = Endereco.check_and_fix_cep_sintax(cep)
+
+        if cep == False:
+            return False
+
         url_api = f'https://viacep.com.br/ws/{str(cep)}/json/'
 
         # Sem corpo na requisição
@@ -56,11 +65,21 @@ class Endereco:
 
         # requisição GET na url de pesquisa do cep. Doc.: https://viacep.com.br/
         response = requests.request("GET", url_api, headers=headers, data=payload)
-
         # converte a resposta json em dict
         json_resp = response.json()
+        if json_resp == {'erro': 'true'}:
+            return False
         return json_resp
 
+    def check_and_fix_cep_sintax(cep): # Done
+        cep = str(cep)
+        if len(cep) <= 8:
+                while len(cep) < 8:
+                    cep = f'0{cep}'
+                return cep
+        else:
+            print('oohh shit')
+            return False
 
-
-
+    def __str__ (cls):
+        return f' {cls.rua}, {cls.numero} --- {cls.cidade} --- {cls.estado}'

@@ -7,7 +7,6 @@
 # ---------------------------------------------------------------------------
 
 from classes.Endereco import Endereco
-import re
 
 
 class PessoaFisica:
@@ -16,24 +15,43 @@ class PessoaFisica:
     As propriedades email e cpf estão privadas para previnir o usuário da classe de 
     acessar e alterar diretamente a propriedade sem uma verificação.
     '''
+    
+    __dict = {}
+
 
     def __init__(self, cpf, email, nome='Visitante'):
         self.nome = nome
         self.email = email
         self.cpf = cpf
         self.__enderecos = {}
+        PessoaFisica.__dict[nome] = self
 
     # escolher o estilo de retorno
 
-    def adicionar_endereco(self, apelido_endereco, end:Endereco):
-        pass
+    def adicionar_endereco(self, apelido_end, end:Endereco):
+        self.__enderecos[apelido_end] = end
 
     def remover_endereco(self, apelido_endereco):
-        pass
+        del self.__enderecos[apelido_endereco]
 
     def get_endereco(self, apelido_endereco):
-        pass
+        return self.__enderecos[apelido_endereco]
+    
+    def busca_nome(nome):
+        results = []
+        for person in PessoaFisica.__dict:
+            if person == nome:
+                results += [PessoaFisica.__dict[nome]]
+        return results
 
     def listar_enderecos(self):
-        pass
+        ends = self.__enderecos
+        listagem = []
+        for endereco in ends:
+            listagem += [ends[endereco]]
+        return listagem
     
+    def __str__(self):
+        if self.nome != '':
+            return self.nome
+        return self.nome
