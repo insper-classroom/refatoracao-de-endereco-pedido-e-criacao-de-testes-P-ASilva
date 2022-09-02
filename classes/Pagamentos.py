@@ -7,7 +7,7 @@ class Pagamento:
         self.desconto = desconto
 
     def processa_pagamento(self):
-        self.pedido.status = True
+        self.pedido.status = 1
 
     # Função dummy que sempre dá o pagamento como aprovado
 

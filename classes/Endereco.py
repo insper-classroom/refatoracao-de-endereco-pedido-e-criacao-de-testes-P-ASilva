@@ -78,7 +78,6 @@ class Endereco:
                     cep = f'0{cep}'
                 return cep
         else:
-            print('oohh shit')
             return False
 
     def __str__ (cls):

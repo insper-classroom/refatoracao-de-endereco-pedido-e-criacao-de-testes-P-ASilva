@@ -37,8 +37,5 @@ class Carrinho:
     def lista_produtos(self):
         lista_produtos = []
         for item in self.itens:
-            lista_produtos += [f'x{self.itens[item]} {item.nome}']       
+            lista_produtos += [f'{self.itens[item]}x {item.nome}']       
         return lista_produtos
-
-    def __str__(self):
-        pass
