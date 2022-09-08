@@ -8,4 +8,4 @@ import pytest
 import requests
 import copy
 
-# Desnecessário, visto que os testes são idênticos aos já efetuados em outros arquivos.
+# Vide textes de pedido, carrinho e pagamento - A organização por classes faz mais sentido já que as interações são one-way only.
